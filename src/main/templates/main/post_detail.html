@@ -1,0 +1,77 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<div class="row">
+  <!-- post -->
+  <div class="col-md-8 card mb-4  mt-3 left  top">
+    <div class="card-body">
+      <h1>{% block title %} {{ post.title }} {% endblock title %}</h1>
+      <p class=" text-muted">{{ post.author }} | {{ post.date_published }}</p>
+      <img src="{{post.image.url}}">
+      <p class="card-text ">{{ post.content | safe }}</p>
+      <a href="{% url 'main:post-delete' post.id %}">Delete this post</a>
+      <a href="{% url 'main:post-update' post.id %}">Update this post</a>
+
+      {% if user.is_authenticated %}
+        {% if liked %}
+          <form action="{% url 'main:post-like' post.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Dislike</button> - {{post.total_likes}} likes
+          </form>
+        {% else %}
+          <form action="{% url 'main:post-like' post.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Like</button> - {{post.total_likes}} likes
+          </form>
+        {% endif %}
+      {% else %}
+        <br>
+        {{post.total_likes}} likes
+      {% endif %}
+
+    </div>
+  </div>
+
+  <!-- comments -->
+  <div class="col-md-8 card mb-4  mt-3 ">
+    <div class="card-body">
+      <h2>{{ comments.count }} comments</h2>
+      {% for comment in comments %}
+      <div class="comments" style="padding: 10px;">
+        <p class="font-weight-bold">
+          {{ comment.user }}
+          <span class=" text-muted font-weight-normal">
+            {{ comment.comment_date }}
+          </span>
+        </p>
+        {{ comment.comment_text | linebreaks }}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- new comment -->
+  <div class="col-md-8 card mb-4  mt-3 ">
+    <div class="card-body">
+      {% if new_comment %}
+      <div class="alert alert-success" role="alert">
+        Your comment is awaiting moderation
+      </div>
+      {% else %}
+      <h3>Leave a comment</h3>
+      <form method="post" style="margin-top: 1.3em;">
+        {% csrf_token %}
+        {{ comment_form | crispy}}
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+
+    
+{% endblock content %}
