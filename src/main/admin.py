@@ -3,4 +3,3 @@ from .models import PostCategory, Post, PostComment
 
 admin.site.register(PostCategory)
 admin.site.register(Post)
-admin.site.register(PostComment)
