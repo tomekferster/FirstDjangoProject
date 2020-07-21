@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, PostCategory
 from django.contrib import messages
 from .forms import CreatePostForm, CommentForm
+from django.core.paginator import Paginator
 # from django.core.mail import send_mail
 # from mysite.settings import BASE_DIR
 
@@ -14,16 +15,15 @@ from django.views.generic import (
 )
 
 
-# def home(request):
-#     queryset = Post.objects.all()
-#     return render(request=request,
-#                   template_name='main/home.html',
-#                   context={"posts": queryset})
+def home(request):
+    queryset_list = Post.objects.all()
+    paginator = Paginator(queryset_list, 3)
 
-class PostListView(ListView):
-    queryset = Post.objects.all()
-    template_name='main/home.html'
-    context_object_name = 'posts'
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request=request,
+                  template_name='main/home.html',
+                  context={"posts": page_obj})
 
 
 
@@ -31,7 +31,7 @@ def post_sort(request, single_slug):
     category_slugs = [c.slug for c in PostCategory.objects.all()]
     if single_slug in category_slugs:
         matching_posts = Post.objects.filter(post_category__slug=single_slug)
-        return render(request, 'main/post_sort.html', {"posts": matching_posts})
+        return render(request, 'main/home.html', {"posts": matching_posts})
     else:
         return HttpResponse('WRONG SLUG')
 

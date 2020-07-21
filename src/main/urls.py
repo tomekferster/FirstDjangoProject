@@ -15,15 +15,12 @@ Including another URLconf
 """
 from django.urls import path
 from . import views
-from .views import (
-    PostListView
-)
 
 app_name = "main"
 
 urlpatterns = [
     # path('', views.home, name='home'),
-    path('', PostListView.as_view(), name='post-list'),
+    path('', views.home, name='post-list'),
     
     path('<int:id>', views.post_detail, name='post-detail'),
     path('post_create/', views.post_create, name='post_create'),

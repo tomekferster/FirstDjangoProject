@@ -1,0 +1,18 @@
+body {
+    font-family: sans-serif;
+    font-size: 17px;
+    background-color: #fdfdfd;
+}
+
+.container{
+    max-width: 1360px;
+    min-height: 200vh;
+    height: 100%;
+    padding: 20px;
+
+}
+
+.home_post_card{
+    width: 400px;
+    margin: 20px;
+}

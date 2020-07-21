@@ -24,7 +24,7 @@ class PostCategory(models.Model):
 class Post(models.Model):
     post_category       = models.ForeignKey(PostCategory, on_delete=models.CASCADE, related_name='posts')
     author              = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='blog_posts')  # related_name is used to make it User.blog_posts instead of User.post_set
-    title               = models.CharField(max_length=200)
+    title               = models.CharField(max_length=15)
     date_published      = models.DateTimeField(default=timezone.now)
     image               = models.ImageField(upload_to='post_images', blank=False, null=False)
     content             = models.TextField(blank=False, null=False)

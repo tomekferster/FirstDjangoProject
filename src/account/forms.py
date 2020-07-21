@@ -12,7 +12,7 @@ class RegisterForm(UserCreationForm):
 
 
 class LoginForm(forms.ModelForm):
-    password = forms.CharField(max_length=20, label='Password', widget=forms.PasswordInput)
+    password = forms.CharField(max_length=20, widget=forms.PasswordInput)
 
     class Meta:
         model = Account
