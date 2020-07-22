@@ -11,10 +11,12 @@
       <p class=" text-muted">{{ post.author }} | {{ post.date_published }}</p>
       <img src="{{post.image.url}}">
       <p class="card-text ">{{ post.content | safe }}</p>
-      <a href="{% url 'main:post-delete' post.id %}">Delete this post</a>
-      <a href="{% url 'main:post-update' post.id %}">Update this post</a>
 
       {% if user.is_authenticated %}
+        {% if post.author == request.user or request.user.is_admin %}
+          <a href="{% url 'main:post-delete' post.id %}">Delete this post</a>
+          <a href="{% url 'main:post-update' post.id %}">Update this post</a>
+        {% endif %}
         {% if liked %}
           <form action="{% url 'main:post-like' post.id %}" method="POST">
             {% csrf_token %}
@@ -52,23 +54,33 @@
     </div>
   </div>
 
-  <!-- new comment -->
-  <div class="col-md-8 card mb-4  mt-3 ">
-    <div class="card-body">
-      {% if new_comment %}
-      <div class="alert alert-success" role="alert">
-        Your comment is awaiting moderation
+
+  {% if user.is_authenticated %}  
+    <!-- new comment -->
+    <div class="col-md-8 card mb-4  mt-3 ">
+      <div class="card-body">
+        {% if new_comment %}
+        <div class="alert alert-success" role="alert">
+          Your comment is awaiting moderation
+        </div>
+        {% else %}
+        <h3>Leave a comment</h3>
+        <form method="POST" style="margin-top: 1.3em;">
+          {% csrf_token %}
+          {{ comment_form | crispy}}
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        {% endif %}
       </div>
-      {% else %}
-      <h3>Leave a comment</h3>
-      <form method="post" style="margin-top: 1.3em;">
-        {% csrf_token %}
-        {{ comment_form | crispy}}
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-      {% endif %}
     </div>
-  </div>
+
+    {% else %}
+    <div class="col-md-8 card mb-4  mt-3 ">
+      <div class="card-body">
+        <p>If you want to leave a comment <a href="{% url 'account:login' %}">sign in</a></p>
+      </div>
+    </div>
+    {% endif %}
 </div>
 
 

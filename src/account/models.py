@@ -57,4 +57,6 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+    def get_absolute_url(self):
+        return reverse("account:account", kwargs={"username": self.username})
     

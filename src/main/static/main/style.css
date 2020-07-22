@@ -16,3 +16,20 @@ body {
     width: 400px;
     margin: 20px;
 }
+
+.footer-copyright p{
+    color:  #fdfdfd;
+}
+
+.form_style{
+    margin-top: 1.3em;
+}
+
+.errorlist{
+    list-style-type: none;
+    color: red;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+

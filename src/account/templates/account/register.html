@@ -3,14 +3,14 @@
 {% block content %}
 
 <h3>Register</h3>
-<form method="POST" style="margin-top: 1.3em;">
-    {% csrf_token %}
-    {{form | crispy}}
-    <button type="submit" class="btn btn-primary">Register</button>
-</form>
-
-<p>If you already have an account <a href="/login">sign in</a></p>
-
+<div class="form_style">
+    <form method="POST">
+        {% csrf_token %}
+        {{form | crispy}}
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <p>If you already have an account <a href="{% url 'account:login' %}">sign in</a></p>
+</div>
 {% endblock content %}
 
 

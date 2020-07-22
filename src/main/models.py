@@ -22,13 +22,13 @@ class PostCategory(models.Model):
 
 
 class Post(models.Model):
-    post_category       = models.ForeignKey(PostCategory, on_delete=models.CASCADE, related_name='posts')
-    author              = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='blog_posts')  # related_name is used to make it User.blog_posts instead of User.post_set
-    title               = models.CharField(max_length=15)
-    date_published      = models.DateTimeField(default=timezone.now)
-    image               = models.ImageField(upload_to='post_images', blank=False, null=False)
-    content             = models.TextField(blank=False, null=False)
-    likes               = models.ManyToManyField(Account, related_name='likes')
+    post_category = models.ForeignKey(PostCategory, on_delete=models.CASCADE, related_name='posts')
+    author = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='blog_posts')  # related_name is used to make it User.blog_posts instead of User.post_set
+    title = models.CharField(max_length=25)
+    date_published = models.DateTimeField(default=timezone.now)
+    image = models.ImageField(upload_to='post_images', blank=False, null=False)
+    content = models.TextField(blank=False, null=False)
+    likes  = models.ManyToManyField(Account, related_name='likes', blank=True)
 
     class Meta:
         verbose_name_plural = 'Posts'
@@ -38,7 +38,7 @@ class Post(models.Model):
         return f'{self.title} - {self.author}'
 
     def save(self, *args, **kwargs):
-        super().save()
+        super().save(*args, **kwargs)
         img = Image.open(self.image.path)
 
         if img.width > 600 or img.height > 600:

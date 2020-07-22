@@ -13,7 +13,7 @@
 			</li>
 			<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
 			{% if user.is_authenticated %}
-				<li class="nav-item"><a class="nav-link" href="{% url 'account:account' user.id %}">{{user.username}}</a></li>
+				<li class="nav-item"><a class="nav-link" href="{% url 'account:account' user.username %}">{{user.username}}</a></li>
 				<li class="nav-item"><a class="nav-link" href="{% url 'account:logout' %}">Log Out</a></li>
 				<li class="nav-item"><a class="nav-link" href="{% url 'main:post_create' %}">Create Post</a></li>	  
 			{% else %}

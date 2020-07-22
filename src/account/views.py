@@ -16,15 +16,13 @@ def register(request):
         raw_password = form.cleaned_data.get('password1')
         user = authenticate(email=email, password=raw_password)
         if user is not None:
-            messages.success(request, f'{user.username} has been created')
+            messages.success(request, f"{user.username} has been created")
             login(request, user)
             messages.info(request, f'{user.username} is logged in')
             return redirect('main:post-list')
     # else statement not needed, because all the errors are handled by the form itself
 
-    return render(request=request,
-                  template_name='account/register.html',
-                  context={'form': form})
+    return render(request, 'account/register.html', {'form': form})
 
 
 
@@ -37,29 +35,30 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f' You have successfully logged in as {user.username}')
+            messages.success(request, f" You have successfully logged in as {user.username}")
             return redirect('main:post-list')
 
-    return render(request=request,
-                  template_name='account/login.html',
-                  context={"form": form})
+    return render(request, 'account/login.html', {'form': form})
 
 
 
 def logout_view(request):
     logout(request)
     messages.info(request, 'Logged out successfully')
-    return redirect("main:post-list")
+    return redirect('main:post-list')
 
 
 
 
-def account_view(request, id):
-    obj = get_object_or_404(Account, id=id)
-    form = UpdateAccountForm(request.POST or None, instance=obj)
+def account_view(request, username):
+    acc = get_object_or_404(Account, username=username)
+    if request.user.username != acc.username and not request.user.is_admin:
+        messages.warning(request, "You have no access to other users accounts")
+        return redirect(f"/account/{request.user.username}")
+    form = UpdateAccountForm(request.POST or None, instance=acc)
     if form.is_valid():
         form.save()
-        messages.info(request, f"User ({obj.username}) was updated")
+        messages.info(request, f"User ({acc.username}) was updated")
         return redirect('main:post-list')
     
-    return render(request, 'account/account.html', {"form": form})
+    return render(request, 'account/account.html', {'form': form})
