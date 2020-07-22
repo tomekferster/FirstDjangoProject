@@ -2,4 +2,6 @@
 Lib/
 Scripts/
 pyvenv.cfg
-migrations/
+__pycache__/
+/src/main/migrations/
+/src/account/migrations/
