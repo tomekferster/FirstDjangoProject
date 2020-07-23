@@ -16,6 +16,8 @@ Including another URLconf
 from django.urls import path
 from . import views
 
+from django.contrib.auth import views as auth_views
+
 app_name = "main"
 
 urlpatterns = [
@@ -28,4 +30,5 @@ urlpatterns = [
     path('<slug:single_slug>', views.post_sort, name='post-sort'),
     path('<int:id>/like/', views.post_like, name='post-like'),
     path('about/', views.about, name='about'),
+
 ]

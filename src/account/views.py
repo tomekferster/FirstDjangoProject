@@ -1,4 +1,3 @@
-from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm, UpdateAccountForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -11,6 +10,7 @@ from django.http import HttpResponse
 def register(request):
     form = RegisterForm(request.POST or None)               # this form returns User so I could use 'user = form.save()' and pass it right to login()
     if form.is_valid():
+        print(request.POST)
         form.save()
         email = form.cleaned_data.get('email')
         raw_password = form.cleaned_data.get('password1')

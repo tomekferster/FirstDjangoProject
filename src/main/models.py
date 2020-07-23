@@ -25,7 +25,8 @@ class Post(models.Model):
     post_category = models.ForeignKey(PostCategory, on_delete=models.CASCADE, related_name='posts')
     author = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='blog_posts')  # related_name is used to make it User.blog_posts instead of User.post_set
     title = models.CharField(max_length=25)
-    date_published = models.DateTimeField(default=timezone.now)
+    date_published = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='post_images', blank=False, null=False)
     content = models.TextField(blank=False, null=False)
     likes  = models.ManyToManyField(Account, related_name='likes', blank=True)
@@ -58,7 +59,7 @@ class Post(models.Model):
 class PostComment(models.Model):
     user                = models.ForeignKey(Account, on_delete=models.CASCADE)
     post                = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    comment_date        = models.DateTimeField(default=timezone.now)
+    comment_date        = models.DateTimeField(auto_now_add=True)
     comment_text        = models.TextField(max_length=150)
     active              = models.BooleanField(default=False)
 
