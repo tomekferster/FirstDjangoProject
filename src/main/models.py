@@ -6,9 +6,11 @@ from django.urls import reverse
 from PIL import Image
 from account.models import Account
 
+
+
 class PostCategory(models.Model):
     name                = models.CharField(max_length=200)
-    slug                = models.SlugField()
+    slug                = models.SlugField(unique=True)
 
     class Meta:
         verbose_name_plural = 'Post categories'
@@ -52,7 +54,7 @@ class Post(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse("main:post-detail", kwargs={"id": self.id})
+        return reverse("main:post-detail", kwargs={"pk": self.pk})
 
 
 

@@ -16,19 +16,16 @@ Including another URLconf
 from django.urls import path
 from . import views
 
-from django.contrib.auth import views as auth_views
-
 app_name = "main"
 
 urlpatterns = [
-    path('', views.home, name='post-list'),
     
-    path('<int:id>', views.post_detail, name='post-detail'),
-    path('post_create/', views.post_create, name='post_create'),
-    path('<int:id>/update/', views.post_update, name='post-update'),
-    path('<int:id>/delete/', views.post_delete, name='post-delete'),
-    path('<slug:single_slug>', views.post_sort, name='post-sort'),
-    path('<int:id>/like/', views.post_like, name='post-like'),
+    path('', views.PostListView.as_view(), name='post-list'),
+    path('<int:pk>/like/', views.PostDetailView.as_view(), name='post-like'),
+    path('<int:pk>', views.PostDetailView.as_view(), name='post-detail'),
+    path('<slug:single_slug>', views.PostSortedListView.as_view(), name='post-sort'),
+    path('post_create/', views.PostCreateView.as_view(), name='post_create'),
+    path('<int:pk>/update/', views.PostUpdateView.as_view(), name='post-update'),
+    path('<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'),
     path('about/', views.about, name='about'),
-
 ]

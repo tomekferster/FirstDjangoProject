@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Account
 from django.http import HttpResponse
-
+from django.contrib.auth.decorators import login_required
 
 def register(request):
     form = RegisterForm(request.POST or None)               # this form returns User so I could use 'user = form.save()' and pass it right to login()
@@ -49,7 +49,7 @@ def logout_view(request):
 
 
 
-
+@login_required
 def account_view(request, username):
     acc = get_object_or_404(Account, username=username)
     if request.user.username != acc.username and not request.user.is_admin:
